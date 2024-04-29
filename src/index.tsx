@@ -10,15 +10,20 @@ import App from './App';
 
 const router = createBrowserRouter([
   {
-    element: <BasicLayout />,
+    element: <App />,
     children: [
       {
-        path: ROUTE_PATH.HOME,
-        element: <HomePage />,
-      },
-      {
-        path: ROUTE_PATH.CHAT,
-        element: <ChatPage />,
+        element: <BasicLayout />,
+        children: [
+          {
+            path: ROUTE_PATH.HOME,
+            element: <HomePage />,
+          },
+          {
+            path: ROUTE_PATH.CHAT,
+            element: <ChatPage />,
+          },
+        ],
       },
     ],
   },
@@ -26,10 +31,9 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <App />
+  <>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </>,
 );
 
 // If you want to start measuring performance in your app, pass a function

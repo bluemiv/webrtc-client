@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { getLocalMediaStream } from '@/utils';
 import { RequestChatModal } from '@/components';
+import { useCallStatusChatStore, useSocketChatStore } from '@/store';
+import { SOCKET_EVENTS_NAME } from '@/constants';
 
 const HomePage = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const { callStatus, setCallStatus } = useCallStatusChatStore();
+
+  const { socket } = useSocketChatStore();
 
   useEffect(() => {
     requestPermissions();
@@ -21,16 +25,16 @@ const HomePage = () => {
   };
 
   const onClickRequestChat = () => {
-    setModalOpen(true);
-    // nav(ROUTE_PATH.CHAT.replace(':room', 'test-room'));
+    setCallStatus({ ...callStatus, sendModalOpen: true });
+    socket?.emit(SOCKET_EVENTS_NAME.CALL);
   };
 
   return (
     <div className="flex items-center justify-center h-full">
       <Button disabled={!stream} type="primary" onClick={onClickRequestChat}>
-        방 들어가기
+        화상 통화 요청하기
       </Button>
-      {modalOpen && <RequestChatModal open={modalOpen} onClose={() => setModalOpen(false)} />}
+      <RequestChatModal />
     </div>
   );
 };

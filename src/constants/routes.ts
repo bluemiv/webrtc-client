@@ -1,4 +1,4 @@
 export const ROUTE_PATH = {
   HOME: '/',
-  CHAT: '/chat/:room',
+  CHAT: '/chat',
 };
