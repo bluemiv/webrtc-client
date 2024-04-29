@@ -2,21 +2,21 @@ import { create } from 'zustand';
 import { Socket } from 'socket.io-client';
 import { ROOM_NAME, SOCKET_EVENTS_NAME } from '@/constants';
 
+type TChatStatus = 'approve' | 'reject';
+
+type TChatState = {
+  status: TChatStatus;
+  sendModalOpen: boolean;
+  receiveModalOpen: boolean;
+};
+
 interface TState {
   socket: Socket | null;
   setSocket: (nextSocket: Socket) => void;
   pc: RTCPeerConnection | null;
   setPC: (nextPC: RTCPeerConnection) => void;
-  callStatus: {
-    status: 'approve' | 'reject';
-    sendModalOpen: boolean;
-    receiveModalOpen: boolean;
-  };
-  setCallStatus: (callStatus: {
-    status: 'approve' | 'reject';
-    sendModalOpen: boolean;
-    receiveModalOpen: boolean;
-  }) => void;
+  chatState: TChatState;
+  setChatState: (chatState: TChatState) => void;
 }
 
 const useChatStore = create<TState>()((set) => ({
@@ -37,17 +37,17 @@ const useChatStore = create<TState>()((set) => ({
 
       nextSocket.on(SOCKET_EVENTS_NAME.CALL, (data) => {
         if (data.sender === nextSocket.id) return;
-        state.setCallStatus({ ...state.callStatus, receiveModalOpen: true });
+        state.setChatState({ ...state.chatState, receiveModalOpen: true });
       });
 
       nextSocket.on(SOCKET_EVENTS_NAME.CALL_APPROVE, (data) => {
         if (data.sender === nextSocket.id) return;
-        state.setCallStatus({ status: 'approve', receiveModalOpen: false, sendModalOpen: false });
+        state.setChatState({ status: 'approve', receiveModalOpen: false, sendModalOpen: false });
       });
 
       nextSocket.on(SOCKET_EVENTS_NAME.CALL_REJECT, (data) => {
         if (data.sender === nextSocket.id) return;
-        state.setCallStatus({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
+        state.setChatState({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
       });
 
       nextSocket.emit(SOCKET_EVENTS_NAME.INIT);
@@ -56,12 +56,12 @@ const useChatStore = create<TState>()((set) => ({
     }),
   pc: null,
   setPC: (nextPC) => set((_) => ({ pc: nextPC })),
-  callStatus: {
+  chatState: {
     status: 'reject',
     sendModalOpen: false,
     receiveModalOpen: false,
   },
-  setCallStatus: (nextCallStatus) => set((_) => ({ callStatus: nextCallStatus })),
+  setChatState: (nextCallStatus) => set((_) => ({ chatState: nextCallStatus })),
 }));
 
 export const useSocketChatStore = () =>
@@ -78,6 +78,6 @@ export const useRTCPCChatStore = () =>
 
 export const useCallStatusChatStore = () =>
   useChatStore((state) => ({
-    callStatus: state.callStatus,
-    setCallStatus: state.setCallStatus,
+    chatState: state.chatState,
+    setChatState: state.setChatState,
   }));

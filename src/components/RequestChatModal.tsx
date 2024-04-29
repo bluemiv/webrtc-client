@@ -6,25 +6,25 @@ import { useNavigate } from 'react-router-dom';
 
 const RequestChatModal = () => {
   const { socket } = useSocketChatStore();
-  const { callStatus, setCallStatus } = useCallStatusChatStore();
+  const { chatState, setChatState } = useCallStatusChatStore();
   const nav = useNavigate();
 
   useEffect(() => {
-    if (callStatus.status === 'approve') {
-      setCallStatus({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
+    if (chatState.status === 'approve') {
+      setChatState({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
       nav(ROUTE_PATH.CHAT);
     }
-  }, [callStatus]);
+  }, [chatState]);
 
   const onCloseModal = () => {
-    setCallStatus({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
+    setChatState({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
     socket?.emit(SOCKET_EVENTS_NAME.CALL_REJECT);
   };
 
   return (
     <Modal
       title="영상통화 요청"
-      open={callStatus.sendModalOpen}
+      open={chatState.sendModalOpen}
       onCancel={onCloseModal}
       footer={
         <>

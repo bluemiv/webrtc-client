@@ -7,7 +7,7 @@ import { SOCKET_EVENTS_NAME } from '@/constants';
 
 const HomePage = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const { callStatus, setCallStatus } = useCallStatusChatStore();
+  const { chatState, setChatState } = useCallStatusChatStore();
 
   const { socket } = useSocketChatStore();
 
@@ -25,7 +25,7 @@ const HomePage = () => {
   };
 
   const onClickRequestChat = () => {
-    setCallStatus({ ...callStatus, sendModalOpen: true });
+    setChatState({ ...chatState, sendModalOpen: true });
     socket?.emit(SOCKET_EVENTS_NAME.CALL);
   };
 

@@ -7,7 +7,7 @@ import { ROUTE_PATH, SOCKET_EVENTS_NAME } from '@/constants';
 
 function App() {
   const { socket, setSocket } = useSocketChatStore();
-  const { callStatus, setCallStatus } = useCallStatusChatStore();
+  const { chatState, setChatState } = useCallStatusChatStore();
   const nav = useNavigate();
 
   const msgServer = process.env.REACT_APP_MSG_SERVER_HOST;
@@ -26,22 +26,22 @@ function App() {
 
   const onCloseCallModal = () => {
     socket?.emit(SOCKET_EVENTS_NAME.CALL_REJECT);
-    setCallStatus({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
+    setChatState({ status: 'reject', receiveModalOpen: false, sendModalOpen: false });
   };
 
   const onClickApprove = () => {
     socket?.emit(SOCKET_EVENTS_NAME.CALL_APPROVE);
-    setCallStatus({ status: 'approve', receiveModalOpen: false, sendModalOpen: false });
+    setChatState({ status: 'approve', receiveModalOpen: false, sendModalOpen: false });
     nav(ROUTE_PATH.CHAT);
   };
 
   return (
     <>
       <Outlet />
-      {callStatus.receiveModalOpen && (
+      {chatState.receiveModalOpen && (
         <Modal
           title="화상 통화 요청"
-          open={callStatus.receiveModalOpen}
+          open={chatState.receiveModalOpen}
           onCancel={onCloseCallModal}
           footer={
             <>
