@@ -1,12 +1,17 @@
 import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/constants';
 
 const BasicLayout = () => {
+  const navigate = useNavigate();
+
   const pathList = window.location.pathname.split('/').filter((v) => !!v);
   return (
     <Layout className="min-h-screen">
       <Layout.Header className="h-[60px] text-white">
-        <div>WebRTC Client</div>
+        <button className="hover:text-sky-400" onClick={() => navigate(ROUTE_PATH.HOME)}>
+          WebRTC Client
+        </button>
       </Layout.Header>
       <Layout.Content className="p-6 min-h-[calc(100vh-60px)] overflow-y-auto">
         <div className="flex items-center gap-3 mb-6">
