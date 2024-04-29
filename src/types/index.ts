@@ -9,3 +9,8 @@ export type TPropsWithChildren<T = unknown> = T & {
 };
 
 export type TPropsWithBaseComponent<T = unknown> = T & TPropsWithClassName & TPropsWithChildren;
+
+export type TPropsWithModal<T = unknown> = T & {
+  open?: boolean;
+  onClose?: (refresh?: boolean) => void;
+};

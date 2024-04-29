@@ -1,12 +1,10 @@
-import React from 'react';
-import { Video } from '@/components';
+import React, { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 
 function App() {
-  return (
-    <div>
-      <Video />
-    </div>
-  );
+  useEffect(() => {}, []);
+
+  return <Outlet />;
 }
 
 export default App;

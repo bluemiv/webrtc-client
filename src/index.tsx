@@ -6,18 +6,24 @@ import './index.css';
 import { ROUTE_PATH } from '@/constants';
 import { HomePage, ChatPage } from '@/pages';
 import { BasicLayout } from '@/layout';
+import App from './App';
 
 const router = createBrowserRouter([
   {
-    element: <BasicLayout />,
+    element: <App />,
     children: [
       {
-        path: ROUTE_PATH.HOME,
-        element: <HomePage />,
-      },
-      {
-        path: ROUTE_PATH.CHAT,
-        element: <ChatPage />,
+        element: <BasicLayout />,
+        children: [
+          {
+            path: ROUTE_PATH.HOME,
+            element: <HomePage />,
+          },
+          {
+            path: ROUTE_PATH.CHAT,
+            element: <ChatPage />,
+          },
+        ],
       },
     ],
   },
