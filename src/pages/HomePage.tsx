@@ -13,12 +13,8 @@ const HomePage = () => {
   }, []);
 
   const requestPermissions = async () => {
-    try {
-      const stream = await getLocalMediaStream();
-      setStream(stream);
-    } catch (e) {
-      console.error(e);
-    }
+    const stream = await getLocalMediaStream();
+    setStream(stream);
   };
 
   return (
